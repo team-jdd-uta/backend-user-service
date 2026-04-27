@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamuta.userinfoserver.repository.FollowsRepository">
+
+    <resultMap id="CustomerMap" type="com.teamuta.userinfoserver.dto.CustomerDTO">
+        <result property="customerId" column="customerId"/>
+        <result property="customerName" column="customerName"/>
+    </resultMap>
+
+    <select id="selectFollowingByUserId" parameterType="map" resultMap="CustomerMap">
+        /*
+        내가 팔로우 하는 사람
+
+        범위처리 해야됨...
+        */
+        SELECT fs.followed_user_id as customerId, (SELECT c.name
+                                                    FROM customer c
+                                                    WHERE c.user_id = fs.followed_user_id
+                                                    ) AS customerName
+        FROM follows fs
+        WHERE fs.following_user_id = #{userId}
+        ORDER BY fs.followed_user_id
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectFollowedByUserId" parameterType="map" resultType="com.teamuta.userinfoserver.dto.CustomerDTO">
+        /*
+        나를 팔로우 하는 사람
+        */
+        SELECT fs.following_user_id as customerId,
+               (select c.name from customer c where c.user_id = fs.following_user_id) as customerName
+        FROM follows fs
+        WHERE fs.followed_user_id = #{userId}
+        ORDER BY fs.following_user_id
+        LIMIT #{limit} OFFSET #{offset}
+
+    </select>
+
+    <select id="selectFollowedCount" parameterType="String" resultType="int">
+        /*
+        나를 팔로우 하는 사람수
+        */
+
+        SELECT count(fs.followed_user_id)
+        FROM follows fs
+        WHERE fs.followed_user_id = #{userId}
+    </select>
+
+    <select id="selectFollowingCount" parameterType="String" resultType="int">
+        /*
+        내가 팔로우 하는 사람수
+        */
+
+        SELECT count(fs.following_user_id)
+        FROM follows fs
+        WHERE fs.following_user_id = #{userId}
+    </select>
+
+    <insert id="insertFollow" parameterType="map">
+        INSERT INTO follows (following_user_id, followed_user_id, followed_at)
+        VALUES (#{followingUserId}, #{followedUserId}, #{followedAt,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>
