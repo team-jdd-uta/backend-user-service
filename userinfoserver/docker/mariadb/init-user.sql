@@ -3,13 +3,13 @@
 -- --------------------------
 -- DB / 사용자
 -- --------------------------
-CREATE DATABASE IF NOT EXISTS uta;
+CREATE DATABASE IF NOT EXISTS app_target;
 
-CREATE USER IF NOT EXISTS 'UTA'@'%' IDENTIFIED BY '1234';
-GRANT ALL PRIVILEGES ON uta.* TO 'UTA'@'%';
+CREATE USER IF NOT EXISTS 'app_target'@'%' IDENTIFIED BY 'app_target1234';
+GRANT ALL PRIVILEGES ON app_target.* TO 'app_target'@'%';
 FLUSH PRIVILEGES;
 
-USE uta;
+USE app_target;
 
 -- --------------------------
 -- 기존 테이블 정리
