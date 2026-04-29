@@ -31,6 +31,11 @@ CREATE TABLE customer (
     created_at TIMESTAMP NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE consumed_user_event (
+    event_id VARCHAR(100) PRIMARY KEY,
+    consumed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
 -- --------------------------
 -- Category Table
 -- --------------------------
