@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+
+
 /**
  * 
  * my page 관련 컨트롤러.
@@ -39,6 +41,14 @@ public class UserInfoController {
 
         return followsService.subscribeUser(myUserId, streamerId);
     }
+
+    @PutMapping("/{userId}/profile")
+    public CustomerDTO updateUserInfo(@PathVariable("userId") String userId, @RequestBody CustomerDTO entity) {
+        customerService.updateCustomerInfo(userId, entity);
+
+        return entity;
+    }
+    
 
     @GetMapping("/info/{userId}")
     public UserInfoDTO getUserInfo(@PathVariable String userId) {

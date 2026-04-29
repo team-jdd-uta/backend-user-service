@@ -11,4 +11,11 @@
         WHERE c.user_id = #{userId}
     </select>
 
+    <update id="updateCustomerInfo" parameterType="map">
+        UPDATE customer
+        SET name = #{name},
+            email = #{email}
+        WHERE user_id = #{userId}
+    </update>
+
 </mapper>
