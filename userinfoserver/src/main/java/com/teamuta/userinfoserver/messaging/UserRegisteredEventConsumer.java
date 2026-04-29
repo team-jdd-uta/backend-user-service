@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 
@@ -31,7 +31,7 @@ public class UserRegisteredEventConsumer {
     }
 
     @KafkaListener(topics = "${app.kafka.topics.user-registered}")
-    public void consume(ConsumerRecord<String, String> record) throws JacksonException {
+    public void consume(ConsumerRecord<String, String> record) {
         String eventType = headerValue(record, "event_type");
         if (eventType == null) {
             eventType = headerValue(record, "eventType");
@@ -59,8 +59,22 @@ public class UserRegisteredEventConsumer {
             return;
         }
 
-        UserRegisteredEvent event = objectMapper.readValue(record.value(), UserRegisteredEvent.class);
-        projectionService.project(event);
+        UserRegisteredEvent event;
+        try {
+            event = objectMapper.readValue(record.value(), UserRegisteredEvent.class);
+        } catch (JacksonException e) {
+            log.error("Skipping malformed user event key={} topic={} offset={}: {}",
+                    record.key(), record.topic(), record.offset(), e.getMessage());
+            return;
+        }
+
+        try {
+            projectionService.project(event);
+        } catch (IllegalArgumentException e) {
+            log.error("Skipping invalid user event eventId={} userId={}: {}",
+                    event.eventId(), event.userId(), e.getMessage());
+            return;
+        }
 
         log.info("Projected user registration eventId={} userId={} topic={} partition={} offset={}",
                 event.eventId(), event.userId(), record.topic(), record.partition(), record.offset());

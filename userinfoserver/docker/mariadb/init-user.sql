@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS watch_history;
 DROP TABLE IF EXISTS follows;
 DROP TABLE IF EXISTS video;
 DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS consumed_user_event;
 DROP TABLE IF EXISTS customer;
 
 -- --------------------------
