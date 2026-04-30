@@ -15,7 +15,7 @@ Comment랑 관련 있다기보다는 채팅 조회 기능임.
  */
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/comments")
 public class CommentController {
 
     @Autowired

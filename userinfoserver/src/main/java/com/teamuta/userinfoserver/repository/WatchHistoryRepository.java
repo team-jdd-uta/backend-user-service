@@ -12,5 +12,6 @@ public interface WatchHistoryRepository {
 															 @Param("offset") int offset,
 															 @Param("limit") int limit);
 	int insertWatchHistory(WatchHistoryDTO watchHistory);
+	String selectVideoNameByVideoId(@Param("videoId") Long videoId);
 }
 

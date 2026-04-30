@@ -7,7 +7,7 @@
 
     <resultMap id="CustomerMap" type="com.teamuta.userinfoserver.dto.CustomerDTO">
         <result property="customerId" column="customerId"/>
-        <result property="customerName" column="customerName"/>
+        <result property="username" column="username"/>
     </resultMap>
 
     <select id="selectFollowingByUserId" parameterType="map" resultMap="CustomerMap">
@@ -16,10 +16,8 @@
 
         범위처리 해야됨...
         */
-        SELECT fs.followed_user_id as customerId, (SELECT c.name
-                                                    FROM customer c
-                                                    WHERE c.user_id = fs.followed_user_id
-                                                    ) AS customerName
+         SELECT fs.followed_user_id as customerId,
+             NULL AS username
         FROM follows fs
         WHERE fs.following_user_id = #{userId}
         ORDER BY fs.followed_user_id
@@ -30,8 +28,8 @@
         /*
         나를 팔로우 하는 사람
         */
-        SELECT fs.following_user_id as customerId,
-               (select c.name from customer c where c.user_id = fs.following_user_id) as customerName
+         SELECT fs.following_user_id as customerId,
+             NULL as username
         FROM follows fs
         WHERE fs.followed_user_id = #{userId}
         ORDER BY fs.following_user_id

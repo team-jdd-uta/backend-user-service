@@ -18,9 +18,9 @@
         기간정보는 서비스 요구사항에 따라 변경할것. (최대 조회가능 기간 5년... 등등)
         파티션 프루닝 잘 되는지 확인하기...
         */
-        SELECT wh.video_id as video_id,
-               (SELECT v.video_name FROM video v WHERE v.video_id = wh.video_id) AS video_name,
-               wh.started_at as started_at
+         SELECT wh.video_id as video_id,
+             NULL AS video_name,
+             wh.started_at as started_at
         FROM watch_history wh USE INDEX (idx_watch_user_id)
         WHERE wh.user_id = #{userId}
           AND wh.started_at > DATE_SUB(NOW(), INTERVAL 300 DAY)
@@ -47,5 +47,11 @@
         INSERT INTO watch_history (user_id, video_id, started_at, ended_at)
         VALUES (#{userId}, #{videoId}, #{startedAt,jdbcType=TIMESTAMP}, #{endedAt,jdbcType=TIMESTAMP})
     </insert>
+
+    <select id="selectVideoNameByVideoId" parameterType="map" resultType="String">
+        SELECT v.video_name
+        FROM video v
+        WHERE v.video_id = #{videoId}
+    </select>
 
 </mapper>
