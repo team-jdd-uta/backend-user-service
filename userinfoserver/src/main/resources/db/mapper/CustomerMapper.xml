@@ -18,4 +18,23 @@
         WHERE user_id = #{userId}
     </update>
 
+    <insert id="upsertRegisteredUser">
+        INSERT INTO customer (user_id, `password`, name, email, created_at)
+        VALUES (#{userId}, NULL, #{name}, #{email}, #{createdAt})
+        ON DUPLICATE KEY UPDATE
+            name = VALUES(name),
+            email = VALUES(email),
+            created_at = CASE
+                WHEN created_at IS NULL THEN VALUES(created_at)
+                WHEN VALUES(created_at) IS NULL THEN created_at
+                WHEN VALUES(created_at) &lt; created_at THEN VALUES(created_at)
+                ELSE created_at
+            END
+    </insert>
+
+    <insert id="insertConsumedUserEvent">
+        INSERT IGNORE INTO consumed_user_event (event_id)
+        VALUES (#{eventId})
+    </insert>
+
 </mapper>

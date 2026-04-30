@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS watch_history;
 DROP TABLE IF EXISTS follows;
 DROP TABLE IF EXISTS video;
 DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS consumed_user_event;
 DROP TABLE IF EXISTS customer;
 
 -- --------------------------
@@ -29,6 +30,11 @@ CREATE TABLE customer (
     name VARCHAR(100),
     email VARCHAR(255),
     created_at TIMESTAMP NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE consumed_user_event (
+    event_id VARCHAR(100) PRIMARY KEY,
+    consumed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
 -- --------------------------
