@@ -61,4 +61,10 @@
         INSERT INTO follows (following_user_id, followed_user_id, followed_at)
         VALUES (#{followingUserId}, #{followedUserId}, #{followedAt,jdbcType=TIMESTAMP})
     </insert>
+
+    <delete id="deleteFollow" parameterType="map">
+        DELETE FROM follows
+        WHERE following_user_id = #{followingUserId}
+          AND followed_user_id = #{followedUserId}
+    </delete>
 </mapper>

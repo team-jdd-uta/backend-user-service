@@ -42,6 +42,14 @@ public class UserInfoController {
         return followsService.subscribeUser(myUserId, streamerId);
     }
 
+    @DeleteMapping("/{userId}/follow/{streamerId}")
+    public boolean unsubscribeUser(
+            @PathVariable String userId,
+            @PathVariable String streamerId) {
+
+        return followsService.unsubscribeUser(userId, streamerId);
+    }
+
     @PutMapping("/{userId}/profile")
     public CustomerDTO updateUserInfo(@PathVariable("userId") String userId, @RequestBody CustomerDTO entity) {
         customerService.updateCustomerInfo(userId, entity);
