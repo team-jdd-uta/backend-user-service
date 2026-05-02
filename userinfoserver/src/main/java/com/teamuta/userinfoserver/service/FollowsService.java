@@ -70,6 +70,19 @@ public class FollowsService {
         }
     }
 
+    public boolean unsubscribeUser(String fromCustomerId, String toCustomerId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("followingUserId", fromCustomerId);
+        params.put("followedUserId", toCustomerId);
+
+        CustomerShardContext.useShard(resolveShardByCustomerId(fromCustomerId));
+        try {
+            return sqlSession.delete("com.teamuta.userinfoserver.repository.FollowsRepository.deleteFollow", params) > 0;
+        } finally {
+            CustomerShardContext.clear();
+        }
+    }
+
     public List<CustomerDTO> getFollowingList(String customerId, int offset, int limit) {
         //내가 팔로우하는 사람들
         Map<String, Object> params = new HashMap<>();
