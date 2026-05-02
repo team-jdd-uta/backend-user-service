@@ -46,10 +46,10 @@ curl -X PUT http://localhost:8084/users/{userId}/profile \
 
 | Method | Path | 설명 |
 | --- | --- | --- |
-| `GET` | `/api/comments/user/{userId}` | 사용자별 댓글 조회 |
-| `GET` | `/api/comments/user/{userId}/room/{roomId}` | 사용자 + 방 기준 댓글 조회 |
-| `GET` | `/api/comments/room/{roomId}` | 방 기준 댓글 조회 |
-| `GET` | `/api/comments/room/{roomId}/date/{startDate}/{endDate}` | 방 + 기간 기준 댓글 조회 |
+| `GET` | `/api/user/comments/user/{userId}` | 사용자별 댓글 조회 |
+| `GET` | `/api/user/comments/user/{userId}/room/{roomId}` | 사용자 + 방 기준 댓글 조회 |
+| `GET` | `/api/user/comments/room/{roomId}` | 방 기준 댓글 조회 |
+| `GET` | `/api/user/comments/room/{roomId}/date/{startDate}/{endDate}` | 방 + 기간 기준 댓글 조회 |
 
 ## Kafka Consumer
 
@@ -149,7 +149,7 @@ docker build -t team9-user-service:local .
 ## Kubernetes 기준
 
 - Service port는 `8084`입니다.
-- Ingress에서는 `/api/users`를 `/users`로, `/api/comments`는 그대로 이 서비스로 라우팅합니다.
+- Ingress에서는 `/api/user`를 이 서비스로 라우팅하고, 실제 컨트롤러는 `/users`와 `/comments`를 사용합니다.
 - Kafka와 target MariaDB가 준비된 뒤 배포해야 consumer가 정상 기동합니다.
 
 ## 주의점
