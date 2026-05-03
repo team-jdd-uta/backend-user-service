@@ -15,7 +15,8 @@ import java.time.ZoneOffset;
 public class UserRegistrationProjectionService {
 
     private static final Logger log = LoggerFactory.getLogger(UserRegistrationProjectionService.class);
-    private static final int SUPPORTED_EVENT_VERSION = 1;
+    private static final int MIN_SUPPORTED_EVENT_VERSION = 1;
+    private static final int MAX_SUPPORTED_EVENT_VERSION = 2;
 
     private final CustomerRepository customerRepository;
 
@@ -60,7 +61,7 @@ public class UserRegistrationProjectionService {
         if (event.occurredAt() <= 0) {
             throw new IllegalArgumentException("occurredAt must be epoch millis");
         }
-        if (event.eventVersion() != SUPPORTED_EVENT_VERSION) {
+        if (event.eventVersion() < MIN_SUPPORTED_EVENT_VERSION || event.eventVersion() > MAX_SUPPORTED_EVENT_VERSION) {
             throw new IllegalArgumentException("Unsupported user registered eventVersion=" + event.eventVersion());
         }
     }
