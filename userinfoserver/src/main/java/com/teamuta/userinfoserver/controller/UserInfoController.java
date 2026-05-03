@@ -5,6 +5,7 @@ import com.teamuta.userinfoserver.dto.UserInfoDTO;
 import com.teamuta.userinfoserver.dto.WatchHistoryDTO;
 import com.teamuta.userinfoserver.service.CustomerService;
 import com.teamuta.userinfoserver.service.FollowsService;
+import com.teamuta.userinfoserver.service.RoomStatsService;
 import com.teamuta.userinfoserver.service.WatchHistoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,13 @@ public class UserInfoController {
     private final FollowsService followsService;
     private final CustomerService customerService;
     private final WatchHistoryService watchHistoryService;
+    private final RoomStatsService roomStatsService;
 
-    public UserInfoController(FollowsService followsService, CustomerService customerService, WatchHistoryService watchHistoryService) {
+    public UserInfoController(FollowsService followsService, CustomerService customerService, WatchHistoryService watchHistoryService, RoomStatsService roomStatsService) {
         this.followsService = followsService;
         this.customerService = customerService;
         this.watchHistoryService = watchHistoryService;
+        this.roomStatsService = roomStatsService;
     }
 
     @PostMapping("/{userId}/follow")
@@ -65,7 +68,7 @@ public class UserInfoController {
                 .userName(customerService.getCustomerById(userId))
                 .followers(followsService.getFollowedCount(userId))
                 .following(followsService.getFollowingCount(userId))
-                .streams(-1) //일단 스트림 횟수 0으로 해놓고 나중에 해결하기.
+                .streams(roomStatsService.countStreamsByBroadcaster(userId))
                 .build();
     }
 
