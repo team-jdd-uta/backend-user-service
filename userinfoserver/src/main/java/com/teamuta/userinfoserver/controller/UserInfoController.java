@@ -81,6 +81,7 @@ public class UserInfoController {
         return UserInfoDTO.builder()
                 .userId(userId)
                 .userName(customerService.getCustomerById(userId))
+                .email(customerService.getCustomerEmailById(userId))
                 .followers(followsService.getFollowedCount(userId))
                 .following(followsService.getFollowingCount(userId))
                 .streams(roomStatsService.countStreamsByBroadcaster(userId))

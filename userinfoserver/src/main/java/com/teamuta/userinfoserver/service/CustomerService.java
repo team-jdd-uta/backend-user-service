@@ -43,6 +43,17 @@ public class CustomerService {
         }
     }
 
+    public String getCustomerEmailById(String userId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userId", userId);
+        CustomerShardContext.useShard(resolveShardByCustomerId(userId));
+        try {
+            return sqlSession.selectOne("com.teamuta.userinfoserver.repository.CustomerRepository.selectCustomerEmailByUserId", params);
+        } finally {
+            CustomerShardContext.clear();
+        }
+    }
+
     private String resolveShardByCustomerId(String customerId) {
         if (customerId == null || customerId.isBlank()) {
             return CustomerShardContext.SHARD_3307;

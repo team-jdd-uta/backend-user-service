@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CustomerRepository {
     String selectCustomerNameByUserId(@Param("userId") String userId);
+    String selectCustomerEmailByUserId(@Param("userId") String userId);
 
     int upsertRegisteredUser(@Param("userId") String userId,
                              @Param("name") String name,
